@@ -12,7 +12,10 @@ __url__          = 'https://github.com/jwodder/morecontext'
 
 from   contextlib import contextmanager
 import os
-from   typing     import Any, Generator
+from   typing     import Any, Generator, MutableMapping, TypeVar
+
+K = TypeVar('K')
+V = TypeVar('V')
 
 @contextmanager
 def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
@@ -58,3 +61,22 @@ def envset(name: str, value: str) -> Generator[None, None, None]:
             os.environ[name] = oldvalue
         else:
             del os.environ[name]
+
+@contextmanager
+def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, None]:
+    try:
+        oldvalue = d[key]
+        oldset = True
+    except KeyError:
+        oldset = False
+    d[key] = value
+    try:
+        yield
+    finally:
+        if oldset:
+            d[key] = oldvalue
+        else:
+            try:
+                del d[key]
+            except KeyError:
+                pass
