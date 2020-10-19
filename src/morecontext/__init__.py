@@ -12,7 +12,7 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__      = '0.1.0.dev1'
+__version__      = '0.1.0'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'morecontext@varonathe.org'
 __license__      = 'MIT'
