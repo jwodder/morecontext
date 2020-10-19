@@ -100,3 +100,23 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, N
                 del d[key]
             except KeyError:
                 pass
+
+@contextmanager
+def itemdel(d: MutableMapping[K, Any], key: K) -> Generator[None, None, None]:
+    try:
+        oldvalue = d[key]
+        oldset = True
+    except KeyError:
+        oldset = False
+    else:
+        del d[key]
+    try:
+        yield
+    finally:
+        if oldset:
+            d[key] = oldvalue
+        else:
+            try:
+                del d[key]
+            except KeyError:
+                pass
