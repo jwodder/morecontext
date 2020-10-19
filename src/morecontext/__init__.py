@@ -12,7 +12,13 @@ __url__          = 'https://github.com/jwodder/morecontext'
 
 from   contextlib import contextmanager
 import os
-from   typing     import Any, Generator, MutableMapping, TypeVar
+import sys
+from   typing     import Any, TypeVar
+
+if sys.version_info < (3,9):
+    from typing import Generator, MutableMapping
+else:
+    from collections.abc import Generator, MutableMapping
 
 K = TypeVar('K')
 V = TypeVar('V')
