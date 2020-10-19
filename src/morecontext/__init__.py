@@ -1,6 +1,14 @@
 """
 Context managers for changing directory, setting attributes/envvars, etc.
 
+``morecontext`` provides context managers for some common minor operations:
+specifically, changing the current working directory, an object's attribute, a
+``dict`` field, or an environment variable and then setting it back afterwards.
+Sure, it's easy enough to implement these on your own, but why bother doing
+that over & over again when you can let this package do it for you once?
+
+Type annotated!  Fully tested!
+
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
@@ -186,9 +194,9 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
 @contextmanager
 def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     """
-    ``itemdel(d, key, value)`` returns a context manager.  On entry, it stores
-    the current value of ``d[key]``, and then it unsets that field.  On exit,
-    it sets the field back to the stored value.
+    ``itemdel(d, key)`` returns a context manager.  On entry, it stores the
+    current value of ``d[key]``, and then it unsets that field.  On exit, it
+    sets the field back to the stored value.
 
     If the given field is unset on entry, the context manager will unset it
     on exit.
