@@ -1,5 +1,5 @@
 """
-Context managers for changing directory, setting attributes, setting envvars, etc.
+Context managers for changing directory, setting attributes/envvars, etc.
 
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
