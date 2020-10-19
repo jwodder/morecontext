@@ -14,7 +14,7 @@ from   contextlib import contextmanager
 import os
 
 @contextmanager
-def changing_dir(dirpath):
+def dirchanged(dirpath):
     olddir = os.getcwd()
     os.chdir(dirpath)
     try:
@@ -45,7 +45,6 @@ def attrset(obj, name, value):
 
 @contextmanager
 def envset(name, value):
-    # Like `attrset()`, but for environment variables
     oldvalue = os.environ.get(name)
     os.environ[name] = value
     try:
