@@ -12,7 +12,7 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__      = '0.1.0'
+__version__      = '0.2.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'morecontext@varonathe.org'
 __license__      = 'MIT'
@@ -30,11 +30,15 @@ else:
 
 __all__ = [
     "attrdel",
+    "attrrollback",
     "attrset",
     "dirchanged",
+    "dirrollback",
     "envdel",
+    "envrollback",
     "envset",
     "itemdel",
+    "itemrollback",
     "itemset",
 ]
 
@@ -49,8 +53,13 @@ def dirchanged(dirpath: os.PathLike) -> Iterator[None]:
     ``dirpath``.  On exit, it changes the current directory back to the stored
     path.
     """
+    with dirrollback():
+        os.chdir(dirpath)
+        yield
+
+@contextmanager
+def dirrollback() -> Iterator[None]:
     olddir = os.getcwd()
-    os.chdir(dirpath)
     try:
         yield
     finally:
@@ -67,22 +76,9 @@ def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
     If the given attribute is unset on entry, the context manager will unset it
     on exit.
     """
-    try:
-        oldvalue = getattr(obj, name)
-        oldset = True
-    except AttributeError:
-        oldset = False
-    setattr(obj, name, value)
-    try:
+    with attrrollback(obj, name):
+        setattr(obj, name, value)
         yield
-    finally:
-        if oldset:
-            setattr(obj, name, oldvalue)
-        else:
-            try:
-                delattr(obj, name)
-            except AttributeError:
-                pass
 
 @contextmanager
 def attrdel(obj: Any, name: str) -> Iterator[None]:
@@ -95,13 +91,20 @@ def attrdel(obj: Any, name: str) -> Iterator[None]:
     If the given attribute is unset on entry, the context manager will unset it
     on exit.
     """
+    with attrrollback(obj, name):
+        try:
+            delattr(obj, name)
+        except AttributeError:
+            pass
+        yield
+
+@contextmanager
+def attrrollback(obj: Any, name: str) -> Iterator[None]:
     try:
         oldvalue = getattr(obj, name)
         oldset = True
     except AttributeError:
         oldset = False
-    else:
-        delattr(obj, name)
     try:
         yield
     finally:
@@ -124,18 +127,9 @@ def envset(name: str, value: str) -> Iterator[None]:
     If the given environment variable is unset on entry, the context manager
     will unset it on exit.
     """
-    oldvalue = os.environ.get(name)
-    os.environ[name] = value
-    try:
+    with envrollback(name):
+        os.environ[name] = value
         yield
-    finally:
-        if oldvalue is not None:
-            os.environ[name] = oldvalue
-        else:
-            try:
-                del os.environ[name]
-            except KeyError:
-                pass
 
 @contextmanager
 def envdel(name: str) -> Iterator[None]:
@@ -148,11 +142,13 @@ def envdel(name: str) -> Iterator[None]:
     If the given environment variable is unset on entry, the context manager
     will unset it on exit.
     """
+    with envrollback(name):
+        os.environ.pop(name, None)
+        yield
+
+@contextmanager
+def envrollback(name: str) -> Iterator[None]:
     oldvalue = os.environ.get(name)
-    try:
-        del os.environ[name]
-    except KeyError:
-        pass
     try:
         yield
     finally:
@@ -174,22 +170,9 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
     If the given field is unset on entry, the context manager will unset it
     on exit.
     """
-    try:
-        oldvalue = d[key]
-        oldset = True
-    except KeyError:
-        oldset = False
-    d[key] = value
-    try:
+    with itemrollback(d, key):
+        d[key] = value
         yield
-    finally:
-        if oldset:
-            d[key] = oldvalue
-        else:
-            try:
-                del d[key]
-            except KeyError:
-                pass
 
 @contextmanager
 def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
@@ -201,13 +184,17 @@ def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     If the given field is unset on entry, the context manager will unset it
     on exit.
     """
+    with itemrollback(d, key):
+        d.pop(key, None)
+        yield
+
+@contextmanager
+def itemrollback(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     try:
         oldvalue = d[key]
         oldset = True
     except KeyError:
         oldset = False
-    else:
-        del d[key]
     try:
         yield
     finally:
