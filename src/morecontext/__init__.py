@@ -20,11 +20,27 @@ if sys.version_info < (3,9):
 else:
     from collections.abc import Generator, MutableMapping
 
+__all__ = [
+    "attrdel",
+    "attrset",
+    "dirchanged",
+    "envdel",
+    "envset",
+    "itemdel",
+    "itemset",
+]
+
 K = TypeVar('K')
 V = TypeVar('V')
 
 @contextmanager
 def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
+    """
+    ``dirchanged(dirpath)`` returns a context manager.  On entry, it stores the
+    current working directory path and then changes the current directory to
+    ``dirpath``.  On exit, it changes the current directory back to the stored
+    path.
+    """
     olddir = os.getcwd()
     os.chdir(dirpath)
     try:
@@ -35,9 +51,13 @@ def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
 @contextmanager
 def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
     """
-    ``with attrset(obj, name, value): BLOCK`` will set the ``name`` attribute
-    of ``obj`` to ``value`` for the lifetime of ``BLOCK`` and restore the
-    original attribute afterwards.
+    ``attrset(obj, name, value)`` returns a context manager.  On entry, it
+    stores the current value of the attribute of ``obj`` with name ``name``,
+    and then it sets that attribute to ``value``.  On exit, it sets the
+    attribute back to the stored value.
+
+    If the given attribute is unset on entry, the context manager will unset it
+    on exit.
     """
     try:
         oldvalue = getattr(obj, name)
@@ -58,6 +78,15 @@ def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
 
 @contextmanager
 def attrdel(obj: Any, name: str) -> Generator[None, None, None]:
+    """
+    ``attrdel(obj, name)`` returns a context manager.  On entry, it stores the
+    current value of the attribute of ``obj`` with name ``name``, and then it
+    unsets that attribute.  On exit, it sets the attribute back to the stored
+    value.
+
+    If the given attribute is unset on entry, the context manager will unset it
+    on exit.
+    """
     try:
         oldvalue = getattr(obj, name)
         oldset = True
@@ -78,6 +107,15 @@ def attrdel(obj: Any, name: str) -> Generator[None, None, None]:
 
 @contextmanager
 def envset(name: str, value: str) -> Generator[None, None, None]:
+    """
+    ``envset(name, value)`` returns a context manager.  On entry, it stores the
+    current value of the environment variable ``name``, and then it sets that
+    environment variable to ``value``.  On exit, it sets the environment
+    variable back to the stored value.
+
+    If the given environment variable is unset on entry, the context manager
+    will unset it on exit.
+    """
     oldvalue = os.environ.get(name)
     os.environ[name] = value
     try:
@@ -93,6 +131,15 @@ def envset(name: str, value: str) -> Generator[None, None, None]:
 
 @contextmanager
 def envdel(name: str) -> Generator[None, None, None]:
+    """
+    ``envdel(name)`` returns a context manager.  On entry, it stores the
+    current value of the environment variable ``name``, and then it unsets that
+    environment variable.  On exit, it sets the environment variable back to
+    the stored value.
+
+    If the given environment variable is unset on entry, the context manager
+    will unset it on exit.
+    """
     oldvalue = os.environ.get(name)
     try:
         del os.environ[name]
@@ -111,6 +158,14 @@ def envdel(name: str) -> Generator[None, None, None]:
 
 @contextmanager
 def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, None]:
+    """
+    ``itemset(d, key, value)`` returns a context manager.  On entry, it stores
+    the current value of ``d[key]``, and then it sets that field to ``value``.
+    On exit, it sets the field back to the stored value.
+
+    If the given field is unset on entry, the context manager will unset it
+    on exit.
+    """
     try:
         oldvalue = d[key]
         oldset = True
@@ -130,6 +185,14 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, N
 
 @contextmanager
 def itemdel(d: MutableMapping[K, Any], key: K) -> Generator[None, None, None]:
+    """
+    ``itemdel(d, key, value)`` returns a context manager.  On entry, it stores
+    the current value of ``d[key]``, and then it unsets that field.  On exit,
+    it sets the field back to the stored value.
+
+    If the given field is unset on entry, the context manager will unset it
+    on exit.
+    """
     try:
         oldvalue = d[key]
         oldset = True
