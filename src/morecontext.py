@@ -41,7 +41,10 @@ def attrset(obj, name, value):
         if oldset:
             setattr(obj, name, oldvalue)
         else:
-            delattr(obj, name)
+            try:
+                delattr(obj, name)
+            except AttributeError:
+                pass
 
 @contextmanager
 def envset(name, value):
