@@ -19,6 +19,7 @@
 `GitHub <https://github.com/jwodder/morecontext>`_
 | `PyPI <https://pypi.org/project/morecontext/>`_
 | `Issues <https://github.com/jwodder/morecontext/issues>`_
+| `Changelog <https://github.com/jwodder/morecontext/blob/master/CHANGELOG.md>`_
 
 ``morecontext`` provides context managers for some common minor operations:
 specifically, changing the current working directory, an object's attribute, a
