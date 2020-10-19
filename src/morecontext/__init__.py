@@ -51,6 +51,26 @@ def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
                 pass
 
 @contextmanager
+def attrdel(obj: Any, name: str) -> Generator[None, None, None]:
+    try:
+        oldvalue = getattr(obj, name)
+        oldset = True
+    except AttributeError:
+        oldset = False
+    else:
+        delattr(obj, name)
+    try:
+        yield
+    finally:
+        if oldset:
+            setattr(obj, name, oldvalue)
+        else:
+            try:
+                delattr(obj, name)
+            except AttributeError:
+                pass
+
+@contextmanager
 def envset(name: str, value: str) -> Generator[None, None, None]:
     oldvalue = os.environ.get(name)
     os.environ[name] = value
