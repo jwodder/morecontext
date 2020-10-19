@@ -80,7 +80,28 @@ def envset(name: str, value: str) -> Generator[None, None, None]:
         if oldvalue is not None:
             os.environ[name] = oldvalue
         else:
-            del os.environ[name]
+            try:
+                del os.environ[name]
+            except KeyError:
+                pass
+
+@contextmanager
+def envdel(name: str) -> Generator[None, None, None]:
+    oldvalue = os.environ.get(name)
+    try:
+        del os.environ[name]
+    except KeyError:
+        pass
+    try:
+        yield
+    finally:
+        if oldvalue is not None:
+            os.environ[name] = oldvalue
+        else:
+            try:
+                del os.environ[name]
+            except KeyError:
+                pass
 
 @contextmanager
 def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, None]:
