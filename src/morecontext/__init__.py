@@ -12,9 +12,10 @@ __url__          = 'https://github.com/jwodder/morecontext'
 
 from   contextlib import contextmanager
 import os
+from   typing     import Any, Generator
 
 @contextmanager
-def dirchanged(dirpath):
+def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
     olddir = os.getcwd()
     os.chdir(dirpath)
     try:
@@ -23,7 +24,7 @@ def dirchanged(dirpath):
         os.chdir(olddir)
 
 @contextmanager
-def attrset(obj, name, value):
+def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
     """
     ``with attrset(obj, name, value): BLOCK`` will set the ``name`` attribute
     of ``obj`` to ``value`` for the lifetime of ``BLOCK`` and restore the
@@ -47,7 +48,7 @@ def attrset(obj, name, value):
                 pass
 
 @contextmanager
-def envset(name, value):
+def envset(name: str, value: str) -> Generator[None, None, None]:
     oldvalue = os.environ.get(name)
     os.environ[name] = value
     try:
