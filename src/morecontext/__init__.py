@@ -16,9 +16,9 @@ import sys
 from   typing     import Any, TypeVar
 
 if sys.version_info < (3,9):
-    from typing import Generator, MutableMapping
+    from typing import Iterator, MutableMapping
 else:
-    from collections.abc import Generator, MutableMapping
+    from collections.abc import Iterator, MutableMapping
 
 __all__ = [
     "attrdel",
@@ -34,7 +34,7 @@ K = TypeVar('K')
 V = TypeVar('V')
 
 @contextmanager
-def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
+def dirchanged(dirpath: os.PathLike) -> Iterator[None]:
     """
     ``dirchanged(dirpath)`` returns a context manager.  On entry, it stores the
     current working directory path and then changes the current directory to
@@ -49,7 +49,7 @@ def dirchanged(dirpath: os.PathLike) -> Generator[None, None, None]:
         os.chdir(olddir)
 
 @contextmanager
-def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
+def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
     """
     ``attrset(obj, name, value)`` returns a context manager.  On entry, it
     stores the current value of the attribute of ``obj`` with name ``name``,
@@ -77,7 +77,7 @@ def attrset(obj: Any, name: str, value: Any) -> Generator[None, None, None]:
                 pass
 
 @contextmanager
-def attrdel(obj: Any, name: str) -> Generator[None, None, None]:
+def attrdel(obj: Any, name: str) -> Iterator[None]:
     """
     ``attrdel(obj, name)`` returns a context manager.  On entry, it stores the
     current value of the attribute of ``obj`` with name ``name``, and then it
@@ -106,7 +106,7 @@ def attrdel(obj: Any, name: str) -> Generator[None, None, None]:
                 pass
 
 @contextmanager
-def envset(name: str, value: str) -> Generator[None, None, None]:
+def envset(name: str, value: str) -> Iterator[None]:
     """
     ``envset(name, value)`` returns a context manager.  On entry, it stores the
     current value of the environment variable ``name``, and then it sets that
@@ -130,7 +130,7 @@ def envset(name: str, value: str) -> Generator[None, None, None]:
                 pass
 
 @contextmanager
-def envdel(name: str) -> Generator[None, None, None]:
+def envdel(name: str) -> Iterator[None]:
     """
     ``envdel(name)`` returns a context manager.  On entry, it stores the
     current value of the environment variable ``name``, and then it unsets that
@@ -157,7 +157,7 @@ def envdel(name: str) -> Generator[None, None, None]:
                 pass
 
 @contextmanager
-def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, None]:
+def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
     """
     ``itemset(d, key, value)`` returns a context manager.  On entry, it stores
     the current value of ``d[key]``, and then it sets that field to ``value``.
@@ -184,7 +184,7 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Generator[None, None, N
                 pass
 
 @contextmanager
-def itemdel(d: MutableMapping[K, Any], key: K) -> Generator[None, None, None]:
+def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     """
     ``itemdel(d, key, value)`` returns a context manager.  On entry, it stores
     the current value of ``d[key]``, and then it unsets that field.  On exit,
