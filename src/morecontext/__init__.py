@@ -59,6 +59,12 @@ def dirchanged(dirpath: os.PathLike) -> Iterator[None]:
 
 @contextmanager
 def dirrollback() -> Iterator[None]:
+    """
+    .. versionadded:: 0.2.0
+
+    ``dirrollback()`` returns a context manager that stores the current working
+    directory on entry and changes back to that directory on exit.
+    """
     olddir = os.getcwd()
     try:
         yield
@@ -100,6 +106,14 @@ def attrdel(obj: Any, name: str) -> Iterator[None]:
 
 @contextmanager
 def attrrollback(obj: Any, name: str) -> Iterator[None]:
+    """
+    .. versionadded:: 0.2.0
+
+    ``attrrollback(obj, name)`` returns a context manager that stores the value
+    of the attribute of ``obj`` with name ``name`` on entry and sets the
+    attribute back to that value on exit.  If the given attribute is unset on
+    entry, the context manager will unset it on exit.
+    """
     try:
         oldvalue = getattr(obj, name)
         oldset = True
@@ -148,6 +162,14 @@ def envdel(name: str) -> Iterator[None]:
 
 @contextmanager
 def envrollback(name: str) -> Iterator[None]:
+    """
+    .. versionadded:: 0.2.0
+
+    ``envrollback(name)`` returns a context manager that stores the value of
+    the environment variable ``name`` on entry and sets the environment
+    variable back to that value on exit.  If the given environment variable is
+    unset on entry, the context manager will unset it on exit.
+    """
     oldvalue = os.environ.get(name)
     try:
         yield
@@ -190,6 +212,14 @@ def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
 
 @contextmanager
 def itemrollback(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
+    """
+    .. versionadded:: 0.2.0
+
+    ``itemrollback(d, key)`` returns a context manager that stores the value
+    of ``d[key]`` on entry and sets the field back to that value on exit.  If
+    the given field is unset on entry, the context manager will unset it on
+    exit.
+    """
     try:
         oldvalue = d[key]
         oldset = True

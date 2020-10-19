@@ -89,6 +89,13 @@ path.
 
 .. code:: python
 
+    dirrollback() -> ContextManager[None]
+
+``dirrollback()`` returns a context manager that stores the current working
+directory on entry and changes back to that directory on exit.
+
+.. code:: python
+
     attrset(obj: Any, name: str, value: Any) -> ContextManager[None]
 
 ``attrset(obj, name, value)`` returns a context manager.  On entry, it stores
@@ -110,6 +117,15 @@ value.
 
 If the given attribute is unset on entry, the context manager will unset it on
 exit.
+
+.. code:: python
+
+    attrrollback(obj: Any, name: str) -> ContextManager[None]
+
+``attrrollback(obj, name)`` returns a context manager that stores the value of
+the attribute of ``obj`` with name ``name`` on entry and sets the attribute
+back to that value on exit.  If the given attribute is unset on entry, the
+context manager will unset it on exit.
 
 .. code:: python
 
@@ -135,6 +151,14 @@ exit.
 
 .. code:: python
 
+    itemrollback(d: MutableMapping[K, Any], key: K) -> ContextManager[None]
+
+``itemrollback(d, key)`` returns a context manager that stores the value of
+``d[key]`` on entry and sets the field back to that value on exit.  If the
+given field is unset on entry, the context manager will unset it on exit.
+
+.. code:: python
+
     envset(name: str, value: str) -> ContextManager[None]
 
 ``envset(name, value)`` returns a context manager.  On entry, it stores the
@@ -155,3 +179,12 @@ variable.  On exit, it sets the environment variable back to the stored value.
 
 If the given environment variable is unset on entry, the context manager will
 unset it on exit.
+
+.. code:: python
+
+    envrollback(name: str) -> ContextManager[None]
+
+``envrollback(name)`` returns a context manager that stores the value of the
+environment variable ``name`` on entry and sets the environment variable back
+to that value on exit.  If the given environment variable is unset on entry,
+the context manager will unset it on exit.
