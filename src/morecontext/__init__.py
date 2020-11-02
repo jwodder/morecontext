@@ -115,10 +115,17 @@ def attrrollback(
     """
     .. versionadded:: 0.2.0
 
+    .. versionchanged:: 0.3.0
+        ``copy`` and ``deepcopy`` arguments added
+
     ``attrrollback(obj, name)`` returns a context manager that stores the value
     of the attribute of ``obj`` with name ``name`` on entry and sets the
     attribute back to that value on exit.  If the given attribute is unset on
     entry, the context manager will unset it on exit.
+
+    If ``copy`` is true, a shallow copy of the attribute will be saved &
+    restored.  If ``deepcopy`` is true, a deep copy of the attribute will be
+    saved & restored.  If both options are true, ``deepcopy`` takes precedence.
     """
     try:
         oldvalue = getattr(obj, name)
@@ -231,10 +238,17 @@ def itemrollback(
     """
     .. versionadded:: 0.2.0
 
+    .. versionchanged:: 0.3.0
+        ``copy`` and ``deepcopy`` arguments added
+
     ``itemrollback(d, key)`` returns a context manager that stores the value
     of ``d[key]`` on entry and sets the field back to that value on exit.  If
     the given field is unset on entry, the context manager will unset it on
     exit.
+
+    If ``copy`` is true, a shallow copy of the field will be saved & restored.
+    If ``deepcopy`` is true, a deep copy of the field will be saved & restored.
+    If both options are true, ``deepcopy`` takes precedence.
     """
     try:
         oldvalue = d[key]
