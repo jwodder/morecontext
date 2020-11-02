@@ -1,5 +1,6 @@
-from types       import SimpleNamespace
-from morecontext import attrrollback
+from   types       import SimpleNamespace
+import pytest
+from   morecontext import attrrollback
 
 def test_attrrollback_nop():
     obj = SimpleNamespace(foo=42)
@@ -33,3 +34,25 @@ def test_attrrollback_unset_modify():
         assert not hasattr(obj, "bar")
         obj.bar = [3.14]
     assert not hasattr(obj, "bar")
+
+def test_attrrollback_no_copy():
+    obj = SimpleNamespace(foo={"bar": [1, 2, 3], "quux": ["a", "b", "c"]})
+    with attrrollback(obj, "foo"):
+        obj.foo["bar"].append(4)
+        obj.foo["quux"] = ["x", "y", "z"]
+    assert obj.foo == {"bar": [1, 2, 3, 4], "quux": ["x", "y", "z"]}
+
+def test_attrrollback_copy():
+    obj = SimpleNamespace(foo={"bar": [1, 2, 3], "quux": ["a", "b", "c"]})
+    with attrrollback(obj, "foo", copy=True):
+        obj.foo["bar"].append(4)
+        obj.foo["quux"] = ["x", "y", "z"]
+    assert obj.foo == {"bar": [1, 2, 3, 4], "quux": ["a", "b", "c"]}
+
+@pytest.mark.parametrize('copy', [False, True])
+def test_attrrollback_deepcopy(copy):
+    obj = SimpleNamespace(foo={"bar": [1, 2, 3], "quux": ["a", "b", "c"]})
+    with attrrollback(obj, "foo", copy=copy, deepcopy=True):
+        obj.foo["bar"].append(4)
+        obj.foo["quux"] = ["x", "y", "z"]
+    assert obj.foo == {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}

@@ -39,3 +39,10 @@ def test_itemset_unset_delled():
         assert d["bar"] == "quux"
         del d["bar"]
     assert "bar" not in d
+
+def test_itemset_not_copied():
+    x = object()
+    d = {"foo": x}
+    with itemset(d, 'foo', 'bar'):
+        assert d["foo"] == "bar"
+    assert d["foo"] is x

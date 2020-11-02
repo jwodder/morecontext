@@ -26,3 +26,10 @@ def test_attrdel_unset_modified():
         assert not hasattr(obj, "bar")
         obj.bar = [3.14]
     assert not hasattr(obj, "bar")
+
+def test_attrdel_not_copied():
+    x = object()
+    obj = SimpleNamespace(foo=x)
+    with attrdel(obj, 'foo'):
+        assert not hasattr(obj, 'foo')
+    assert obj.foo is x

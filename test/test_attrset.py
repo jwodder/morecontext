@@ -40,3 +40,10 @@ def test_attrset_unset_delled():
         assert obj.bar == "quux"
         del obj.bar
     assert not hasattr(obj, "bar")
+
+def test_attrset_not_copied():
+    x = object()
+    obj = SimpleNamespace(foo=x)
+    with attrset(obj, 'foo', 'bar'):
+        assert obj.foo == "bar"
+    assert obj.foo is x
