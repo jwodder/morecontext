@@ -1,5 +1,5 @@
-v0.3.0 (in development)
------------------------
+v0.3.0 (2020-11-02)
+-------------------
 - Support Python 3.9
 - Gave `attrrollback()` and `itemrollback()` new arguments `copy` and
   `deepcopy` for storing copies of the specified attribute/item
