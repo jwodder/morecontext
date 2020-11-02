@@ -19,6 +19,7 @@ __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/morecontext'
 
 from   contextlib import contextmanager
+import copy as copymod
 import os
 import sys
 from   typing     import Any, TypeVar
@@ -105,7 +106,12 @@ def attrdel(obj: Any, name: str) -> Iterator[None]:
         yield
 
 @contextmanager
-def attrrollback(obj: Any, name: str) -> Iterator[None]:
+def attrrollback(
+    obj: Any,
+    name: str,
+    copy: bool = False,
+    deepcopy: bool = False,
+) -> Iterator[None]:
     """
     .. versionadded:: 0.2.0
 
@@ -116,9 +122,14 @@ def attrrollback(obj: Any, name: str) -> Iterator[None]:
     """
     try:
         oldvalue = getattr(obj, name)
-        oldset = True
     except AttributeError:
         oldset = False
+    else:
+        oldset = True
+        if deepcopy:
+            oldvalue = copymod.deepcopy(oldvalue)
+        elif copy:
+            oldvalue = copymod.copy(oldvalue)
     try:
         yield
     finally:
@@ -211,7 +222,12 @@ def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
         yield
 
 @contextmanager
-def itemrollback(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
+def itemrollback(
+    d: MutableMapping[K, Any],
+    key: K,
+    copy: bool = False,
+    deepcopy: bool = False,
+) -> Iterator[None]:
     """
     .. versionadded:: 0.2.0
 
@@ -222,9 +238,14 @@ def itemrollback(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     """
     try:
         oldvalue = d[key]
-        oldset = True
     except KeyError:
         oldset = False
+    else:
+        oldset = True
+        if deepcopy:
+            oldvalue = copymod.deepcopy(oldvalue)
+        elif copy:
+            oldvalue = copymod.copy(oldvalue)
     try:
         yield
     finally:
