@@ -18,7 +18,7 @@ __author_email__ = 'morecontext@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/morecontext'
 
-from   contextlib import contextmanager
+from   contextlib import contextmanager, suppress
 import copy as copymod
 import os
 import sys
@@ -107,10 +107,8 @@ def attrdel(obj: Any, name: str) -> Iterator[None]:
     on exit.
     """
     with attrrollback(obj, name):
-        try:
+        with suppress(AttributeError):
             delattr(obj, name)
-        except AttributeError:
-            pass
         yield
 
 @contextmanager
@@ -153,10 +151,8 @@ def attrrollback(
         if oldset:
             setattr(obj, name, oldvalue)
         else:
-            try:
+            with suppress(AttributeError):
                 delattr(obj, name)
-            except AttributeError:
-                pass
 
 @contextmanager
 def envset(name: str, value: str) -> Iterator[None]:
@@ -211,10 +207,8 @@ def envrollback(name: str) -> Iterator[None]:
         if oldvalue is not None:
             os.environ[name] = oldvalue
         else:
-            try:
+            with suppress(KeyError):
                 del os.environ[name]
-            except KeyError:
-                pass
 
 @contextmanager
 def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
@@ -288,10 +282,8 @@ def itemrollback(
         if oldset:
             d[key] = oldvalue
         else:
-            try:
+            with suppress(KeyError):
                 del d[key]
-            except KeyError:
-                pass
 
 @contextmanager
 def additem(lst: MutableSequence[K], value: K, prepend: bool = False) \
@@ -316,10 +308,8 @@ def additem(lst: MutableSequence[K], value: K, prepend: bool = False) \
         yield
     finally:
         if prepend:
-            try:
+            with suppress(ValueError):
                 lst.remove(value)
-            except ValueError:
-                pass
         else:
             for i in range(len(lst) - 1, -1, -1):
                 if lst[i] == value:
