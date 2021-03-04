@@ -1,3 +1,7 @@
+v0.4.0 (in development)
+-----------------------
+- Added `additem()`
+
 v0.3.0 (2020-11-02)
 -------------------
 - Support Python 3.9

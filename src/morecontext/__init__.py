@@ -12,7 +12,7 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__      = '0.3.0'
+__version__      = '0.4.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'morecontext@varonathe.org'
 __license__      = 'MIT'
@@ -25,9 +25,9 @@ import sys
 from   typing     import Any, TypeVar
 
 if sys.version_info < (3,9):
-    from typing import Iterator, MutableMapping
+    from typing import Iterator, MutableMapping, MutableSequence
 else:
-    from collections.abc import Iterator, MutableMapping
+    from collections.abc import Iterator, MutableMapping, MutableSequence
 
 __all__ = [
     "attrdel",
@@ -270,3 +270,34 @@ def itemrollback(
                 del d[key]
             except KeyError:
                 pass
+
+@contextmanager
+def additem(lst: MutableSequence[K], value: K, prepend: bool = False) \
+        -> Iterator[None]:
+    """
+    .. versionadded:: 0.4.0
+
+    ``additem(lst, value)`` returns a context manager that appends ``value`` to
+    the sequence ``lst`` on entry and removes the last item (if any) in ``lst``
+    that equals ``value`` on exit.
+
+    If ``prepend`` is true, ``value`` is instead prepended to ``lst`` on entry,
+    and the first item in ``lst`` that equals ``value`` is removed on exit.
+    """
+    if prepend:
+        lst.insert(0, value)
+    else:
+        lst.append(value)
+    try:
+        yield
+    finally:
+        if prepend:
+            try:
+                lst.remove(value)
+            except ValueError:
+                pass
+        else:
+            for i in range(len(lst) - 1, -1, -1):
+                if lst[i] == value:
+                    del lst[i]
+                    break

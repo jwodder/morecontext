@@ -198,3 +198,14 @@ unset it on exit.
 environment variable ``name`` on entry and sets the environment variable back
 to that value on exit.  If the given environment variable is unset on entry,
 the context manager will unset it on exit.
+
+.. code:: python
+
+    additem(lst: MutableSequence[T], value: T, prepend: bool = False) -> ContextManager[None]
+
+``additem(lst, value)`` returns a context manager that appends ``value`` to the
+sequence ``lst`` on entry and removes the last item (if any) in ``lst`` that
+equals ``value`` on exit.
+
+If ``prepend`` is true, ``value`` is instead prepended to ``lst`` on entry, and
+the first item in ``lst`` that equals ``value`` is removed on exit.
