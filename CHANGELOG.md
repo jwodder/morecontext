@@ -1,6 +1,6 @@
-v0.4.0 (in development)
------------------------
-- Added `additem()`
+v0.4.0 (2021-03-04)
+-------------------
+- Added `additem()` for temporarily adding a value to a sequence
 
 v0.3.0 (2020-11-02)
 -------------------
