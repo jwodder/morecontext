@@ -4,13 +4,13 @@ from   morecontext import envset
 
 ENVVAR = "MORECONTEXT_FOO"
 
-def test_envset(monkeypatch):
+def test_envset(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_error(monkeypatch):
+def test_envset_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
@@ -18,14 +18,14 @@ def test_envset_error(monkeypatch):
             raise RuntimeError('Catch this!')
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_modified(monkeypatch):
+def test_envset_modified(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
         os.environ[ENVVAR] = "quux"
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_modified_error(monkeypatch):
+def test_envset_modified_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
@@ -34,14 +34,14 @@ def test_envset_modified_error(monkeypatch):
             raise RuntimeError('Catch this!')
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_delled(monkeypatch):
+def test_envset_delled(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
         del os.environ[ENVVAR]
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_delled_error(monkeypatch):
+def test_envset_delled_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(ENVVAR, "foo")
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
@@ -50,13 +50,13 @@ def test_envset_delled_error(monkeypatch):
             raise RuntimeError('Catch this!')
     assert os.environ[ENVVAR] == "foo"
 
-def test_envset_unset(monkeypatch):
+def test_envset_unset(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
     assert ENVVAR not in os.environ
 
-def test_envset_unset_error(monkeypatch):
+def test_envset_unset_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
@@ -64,14 +64,14 @@ def test_envset_unset_error(monkeypatch):
             raise RuntimeError('Catch this!')
     assert ENVVAR not in os.environ
 
-def test_envset_unset_modified(monkeypatch):
+def test_envset_unset_modified(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
         os.environ[ENVVAR] = "quux"
     assert ENVVAR not in os.environ
 
-def test_envset_unset_modified_error(monkeypatch):
+def test_envset_unset_modified_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
@@ -80,14 +80,14 @@ def test_envset_unset_modified_error(monkeypatch):
             raise RuntimeError('Catch this!')
     assert ENVVAR not in os.environ
 
-def test_envset_unset_delled(monkeypatch):
+def test_envset_unset_delled(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with envset(ENVVAR, "bar"):
         assert os.environ[ENVVAR] == "bar"
         del os.environ[ENVVAR]
     assert ENVVAR not in os.environ
 
-def test_envset_unset_delled_error(monkeypatch):
+def test_envset_unset_delled_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv(ENVVAR, raising=False)
     with pytest.raises(RuntimeError, match='Catch this!'):
         with envset(ENVVAR, "bar"):
