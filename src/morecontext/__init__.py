@@ -49,6 +49,8 @@ V = TypeVar('V')
 @contextmanager
 def dirchanged(dirpath: os.PathLike) -> Iterator[None]:
     """
+    Temporarily change the current working directory.
+
     ``dirchanged(dirpath)`` returns a context manager.  On entry, it stores the
     current working directory path and then changes the current directory to
     ``dirpath``.  On exit, it changes the current directory back to the stored
@@ -63,6 +65,8 @@ def dirrollback() -> Iterator[None]:
     """
     .. versionadded:: 0.2.0
 
+    Save & restore the current working directory.
+
     ``dirrollback()`` returns a context manager that stores the current working
     directory on entry and changes back to that directory on exit.
     """
@@ -75,6 +79,8 @@ def dirrollback() -> Iterator[None]:
 @contextmanager
 def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
     """
+    Temporarily change the value of an object's attribute.
+
     ``attrset(obj, name, value)`` returns a context manager.  On entry, it
     stores the current value of the attribute of ``obj`` with name ``name``,
     and then it sets that attribute to ``value``.  On exit, it sets the
@@ -90,6 +96,8 @@ def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
 @contextmanager
 def attrdel(obj: Any, name: str) -> Iterator[None]:
     """
+    Temporarily unset an object's attribute.
+
     ``attrdel(obj, name)`` returns a context manager.  On entry, it stores the
     current value of the attribute of ``obj`` with name ``name``, and then it
     unsets that attribute.  On exit, it sets the attribute back to the stored
@@ -117,6 +125,8 @@ def attrrollback(
 
     .. versionchanged:: 0.3.0
         ``copy`` and ``deepcopy`` arguments added
+
+    Save & restore the value of an object's attribute.
 
     ``attrrollback(obj, name)`` returns a context manager that stores the value
     of the attribute of ``obj`` with name ``name`` on entry and sets the
@@ -151,6 +161,8 @@ def attrrollback(
 @contextmanager
 def envset(name: str, value: str) -> Iterator[None]:
     """
+    Temporarily set an environment variable.
+
     ``envset(name, value)`` returns a context manager.  On entry, it stores the
     current value of the environment variable ``name``, and then it sets that
     environment variable to ``value``.  On exit, it sets the environment
@@ -166,6 +178,8 @@ def envset(name: str, value: str) -> Iterator[None]:
 @contextmanager
 def envdel(name: str) -> Iterator[None]:
     """
+    Temporarily unset an environment variable.
+
     ``envdel(name)`` returns a context manager.  On entry, it stores the
     current value of the environment variable ``name``, and then it unsets that
     environment variable.  On exit, it sets the environment variable back to
@@ -182,6 +196,8 @@ def envdel(name: str) -> Iterator[None]:
 def envrollback(name: str) -> Iterator[None]:
     """
     .. versionadded:: 0.2.0
+
+    Save & restore the value of an environment variable.
 
     ``envrollback(name)`` returns a context manager that stores the value of
     the environment variable ``name`` on entry and sets the environment
@@ -203,6 +219,8 @@ def envrollback(name: str) -> Iterator[None]:
 @contextmanager
 def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
     """
+    Temporarily change the value of a mapping's entry.
+
     ``itemset(d, key, value)`` returns a context manager.  On entry, it stores
     the current value of ``d[key]``, and then it sets that field to ``value``.
     On exit, it sets the field back to the stored value.
@@ -217,6 +235,8 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
 @contextmanager
 def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     """
+    Temporarily unset a mapping's entry.
+
     ``itemdel(d, key)`` returns a context manager.  On entry, it stores the
     current value of ``d[key]``, and then it unsets that field.  On exit, it
     sets the field back to the stored value.
@@ -240,6 +260,8 @@ def itemrollback(
 
     .. versionchanged:: 0.3.0
         ``copy`` and ``deepcopy`` arguments added
+
+    Save & restore the value of a mapping's entry.
 
     ``itemrollback(d, key)`` returns a context manager that stores the value
     of ``d[key]`` on entry and sets the field back to that value on exit.  If
@@ -276,6 +298,8 @@ def additem(lst: MutableSequence[K], value: K, prepend: bool = False) \
         -> Iterator[None]:
     """
     .. versionadded:: 0.4.0
+
+    Temporarily add a value to a sequence.
 
     ``additem(lst, value)`` returns a context manager that appends ``value`` to
     the sequence ``lst`` on entry and removes the last item (if any) in ``lst``

@@ -84,6 +84,8 @@ These functions are not thread-safe.
 
     dirchanged(dirpath: os.PathLike) -> ContextManager[None]
 
+Temporarily change the current working directory.
+
 ``dirchanged(dirpath)`` returns a context manager.  On entry, it stores the
 current working directory path and then changes the current directory to
 ``dirpath``.  On exit, it changes the current directory back to the stored
@@ -93,12 +95,16 @@ path.
 
     dirrollback() -> ContextManager[None]
 
+Save & restore the current working directory.
+
 ``dirrollback()`` returns a context manager that stores the current working
 directory on entry and changes back to that directory on exit.
 
 .. code:: python
 
     attrset(obj: Any, name: str, value: Any) -> ContextManager[None]
+
+Temporarily change the value of an object's attribute.
 
 ``attrset(obj, name, value)`` returns a context manager.  On entry, it stores
 the current value of the attribute of ``obj`` with name ``name``, and then it
@@ -112,6 +118,8 @@ exit.
 
     attrdel(obj: Any, name: str) -> ContextManager[None]
 
+Temporarily unset an object's attribute.
+
 ``attrdel(obj, name)`` returns a context manager.  On entry, it stores the
 current value of the attribute of ``obj`` with name ``name``, and then it
 unsets that attribute.  On exit, it sets the attribute back to the stored
@@ -123,6 +131,8 @@ exit.
 .. code:: python
 
     attrrollback(obj: Any, name: str, copy: bool = False, deepcopy: bool = False) -> ContextManager[None]
+
+Save & restore the value of an object's attribute.
 
 ``attrrollback(obj, name)`` returns a context manager that stores the value of
 the attribute of ``obj`` with name ``name`` on entry and sets the attribute
@@ -137,6 +147,8 @@ If both options are true, ``deepcopy`` takes precedence.
 
     itemset(d: MutableMapping[K,V], key: K, value: V) -> ContextManager[None]
 
+Temporarily change the value of a mapping's entry.
+
 ``itemset(d, key, value)`` returns a context manager.  On entry, it stores the
 current value of ``d[key]``, and then it sets that field to ``value``.  On
 exit, it sets the field back to the stored value.
@@ -148,6 +160,8 @@ exit.
 
     itemdel(d: MutableMapping[K, Any], key: K) -> ContextManager[None]
 
+Temporarily unset a mapping's entry.
+
 ``itemdel(d, key)`` returns a context manager.  On entry, it stores the current
 value of ``d[key]``, and then it unsets that field.  On exit, it sets the field
 back to the stored value.
@@ -158,6 +172,8 @@ exit.
 .. code:: python
 
     itemrollback(d: MutableMapping[K, Any], key: K, copy: bool = False, deepcopy: bool = False) -> ContextManager[None]
+
+Save & restore the value of a mapping's entry.
 
 ``itemrollback(d, key)`` returns a context manager that stores the value of
 ``d[key]`` on entry and sets the field back to that value on exit.  If the
@@ -171,6 +187,8 @@ both options are true, ``deepcopy`` takes precedence.
 
     envset(name: str, value: str) -> ContextManager[None]
 
+Temporarily set an environment variable.
+
 ``envset(name, value)`` returns a context manager.  On entry, it stores the
 current value of the environment variable ``name``, and then it sets that
 environment variable to ``value``.  On exit, it sets the environment variable
@@ -183,6 +201,8 @@ unset it on exit.
 
     envdel(name: str) -> ContextManager[None]
 
+Temporarily unset an environment variable.
+
 ``envdel(name)`` returns a context manager.  On entry, it stores the current
 value of the environment variable ``name``, and then it unsets that environment
 variable.  On exit, it sets the environment variable back to the stored value.
@@ -194,6 +214,8 @@ unset it on exit.
 
     envrollback(name: str) -> ContextManager[None]
 
+Save & restore the value of an environment variable.
+
 ``envrollback(name)`` returns a context manager that stores the value of the
 environment variable ``name`` on entry and sets the environment variable back
 to that value on exit.  If the given environment variable is unset on entry,
@@ -202,6 +224,8 @@ the context manager will unset it on exit.
 .. code:: python
 
     additem(lst: MutableSequence[T], value: T, prepend: bool = False) -> ContextManager[None]
+
+Temporarily add a value to a sequence.
 
 ``additem(lst, value)`` returns a context manager that appends ``value`` to the
 sequence ``lst`` on entry and removes the last item (if any) in ``lst`` that
