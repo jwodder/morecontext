@@ -12,7 +12,7 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__      = '0.4.0'
+__version__      = '0.4.1.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'morecontext@varonathe.org'
 __license__      = 'MIT'
@@ -22,7 +22,7 @@ from   contextlib import contextmanager, suppress
 import copy as copymod
 import os
 import sys
-from   typing     import Any, TypeVar
+from   typing     import Any, TypeVar, Union
 
 if sys.version_info < (3,9):
     from typing import Iterator, MutableMapping, MutableSequence
@@ -47,7 +47,9 @@ K = TypeVar('K')
 V = TypeVar('V')
 
 @contextmanager
-def dirchanged(dirpath: os.PathLike) -> Iterator[None]:
+def dirchanged(
+    dirpath: Union[str, bytes, "os.PathLike[str]", "os.PathLike[bytes]"]
+) -> Iterator[None]:
     """
     Temporarily change the current working directory.
 

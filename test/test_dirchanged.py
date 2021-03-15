@@ -10,6 +10,13 @@ def test_dirchanged(tmp_path: Path) -> None:
         assert Path(os.getcwd()) == tmp_path
     assert os.getcwd() == starting_dir
 
+def test_dirchanged_str(tmp_path: Path) -> None:
+    starting_dir = os.getcwd()
+    assert Path(starting_dir) != tmp_path
+    with dirchanged(str(tmp_path)):
+        assert Path(os.getcwd()) == tmp_path
+    assert os.getcwd() == starting_dir
+
 def test_dirchanged_error(tmp_path: Path) -> None:
     starting_dir = os.getcwd()
     assert Path(starting_dir) != tmp_path
