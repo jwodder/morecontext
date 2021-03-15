@@ -1,5 +1,5 @@
-v0.4.1 (in development)
------------------------
+v0.4.1 (2021-03-15)
+-------------------
 - Fixed the type annotation on `dirchanged()`
 
 v0.4.0 (2021-03-04)
