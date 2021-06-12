@@ -12,19 +12,19 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__      = '0.4.1'
-__author__       = 'John Thorvald Wodder II'
-__author_email__ = 'morecontext@varonathe.org'
-__license__      = 'MIT'
-__url__          = 'https://github.com/jwodder/morecontext'
+__version__ = "0.4.1"
+__author__ = "John Thorvald Wodder II"
+__author_email__ = "morecontext@varonathe.org"
+__license__ = "MIT"
+__url__ = "https://github.com/jwodder/morecontext"
 
-from   contextlib import contextmanager, suppress
+from contextlib import contextmanager, suppress
 import copy as copymod
 import os
 import sys
-from   typing     import Any, TypeVar, Union
+from typing import Any, TypeVar, Union
 
-if sys.version_info < (3,9):
+if sys.version_info < (3, 9):
     from typing import Iterator, MutableMapping, MutableSequence
 else:
     from collections.abc import Iterator, MutableMapping, MutableSequence
@@ -43,8 +43,9 @@ __all__ = [
     "itemset",
 ]
 
-K = TypeVar('K')
-V = TypeVar('V')
+K = TypeVar("K")
+V = TypeVar("V")
+
 
 @contextmanager
 def dirchanged(
@@ -62,6 +63,7 @@ def dirchanged(
         os.chdir(dirpath)
         yield
 
+
 @contextmanager
 def dirrollback() -> Iterator[None]:
     """
@@ -77,6 +79,7 @@ def dirrollback() -> Iterator[None]:
         yield
     finally:
         os.chdir(olddir)
+
 
 @contextmanager
 def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
@@ -95,6 +98,7 @@ def attrset(obj: Any, name: str, value: Any) -> Iterator[None]:
         setattr(obj, name, value)
         yield
 
+
 @contextmanager
 def attrdel(obj: Any, name: str) -> Iterator[None]:
     """
@@ -112,6 +116,7 @@ def attrdel(obj: Any, name: str) -> Iterator[None]:
         with suppress(AttributeError):
             delattr(obj, name)
         yield
+
 
 @contextmanager
 def attrrollback(
@@ -156,6 +161,7 @@ def attrrollback(
             with suppress(AttributeError):
                 delattr(obj, name)
 
+
 @contextmanager
 def envset(name: str, value: str) -> Iterator[None]:
     """
@@ -173,6 +179,7 @@ def envset(name: str, value: str) -> Iterator[None]:
         os.environ[name] = value
         yield
 
+
 @contextmanager
 def envdel(name: str) -> Iterator[None]:
     """
@@ -189,6 +196,7 @@ def envdel(name: str) -> Iterator[None]:
     with envrollback(name):
         os.environ.pop(name, None)
         yield
+
 
 @contextmanager
 def envrollback(name: str) -> Iterator[None]:
@@ -212,8 +220,9 @@ def envrollback(name: str) -> Iterator[None]:
             with suppress(KeyError):
                 del os.environ[name]
 
+
 @contextmanager
-def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
+def itemset(d: MutableMapping[K, V], key: K, value: V) -> Iterator[None]:
     """
     Temporarily change the value of a mapping's entry.
 
@@ -227,6 +236,7 @@ def itemset(d: MutableMapping[K,V], key: K, value: V) -> Iterator[None]:
     with itemrollback(d, key):
         d[key] = value
         yield
+
 
 @contextmanager
 def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
@@ -243,6 +253,7 @@ def itemdel(d: MutableMapping[K, Any], key: K) -> Iterator[None]:
     with itemrollback(d, key):
         d.pop(key, None)
         yield
+
 
 @contextmanager
 def itemrollback(
@@ -287,9 +298,9 @@ def itemrollback(
             with suppress(KeyError):
                 del d[key]
 
+
 @contextmanager
-def additem(lst: MutableSequence[K], value: K, prepend: bool = False) \
-        -> Iterator[None]:
+def additem(lst: MutableSequence[K], value: K, prepend: bool = False) -> Iterator[None]:
     """
     .. versionadded:: 0.4.0
 

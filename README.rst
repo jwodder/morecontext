@@ -50,7 +50,7 @@ Examples
 >>> with morecontext.dirchanged('/some/other/dir'):
 ...     # Now we're in /some/other/dir
 ...     os.getcwd()
-... 
+...
 '/some/other/dir'
 >>> # Out of the `with`, back to /some/dir
 >>> os.getcwd()
@@ -62,7 +62,7 @@ Examples
 ...     d["foo"]
 ...     # If we change d["foo"] in here, it'll still be set back to 42 on exit
 ...     d["foo"] = 3.14
-... 
+...
 'bar'
 >>> # Out of the `with`, it's back to 42
 >>> d["foo"]
