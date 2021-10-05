@@ -1,3 +1,7 @@
+v0.5.0 (in development)
+-----------------------
+- Support Python 3.10
+
 v0.4.1 (2021-03-15)
 -------------------
 - Fixed the type annotation on `dirchanged()`
