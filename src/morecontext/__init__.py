@@ -22,7 +22,8 @@ from contextlib import contextmanager, suppress
 import copy as copymod
 import os
 import sys
-from typing import Any, TypeVar, Union
+from types import TracebackType
+from typing import Any, Optional, Type, TypeVar, Union
 
 if sys.version_info < (3, 9):
     from typing import Iterator, MutableMapping, MutableSequence
@@ -30,6 +31,7 @@ else:
     from collections.abc import Iterator, MutableMapping, MutableSequence
 
 __all__ = [
+    "OpenClosable",
     "attrdel",
     "attrrollback",
     "attrset",
@@ -45,6 +47,7 @@ __all__ = [
 
 K = TypeVar("K")
 V = TypeVar("V")
+OC = TypeVar("OC", bound="OpenClosable")
 
 
 @contextmanager
@@ -328,3 +331,51 @@ def additem(lst: MutableSequence[K], value: K, prepend: bool = False) -> Iterato
                 if lst[i] == value:
                     del lst[i]
                     break
+
+
+class OpenClosable:
+    """
+    A base class for creating simple reentrant_ context managers.
+    `OpenClosable` defines ``__enter__`` and ``__exit__`` methods that keep
+    track of the number of nested ``with`` statements in effect and call the
+    instance's ``open()`` and ``close()`` methods when entering & exiting the
+    outermost ``with``.
+
+    Subclasses should override ``open()`` and/or ``close()`` with the desired
+    code to run on entering & exiting the outermost ``with``; the default
+    ``open()`` and ``close()`` methods defined by `OpenClosable` do nothing.
+
+    .. note::
+
+        Subclasses' ``__init__()`` methods must call ``super().__init__()`` in
+        order to properly initialize `OpenClosable`!
+
+    .. _reentrant: https://docs.python.org/3/library/contextlib.html
+                   #reentrant-cms
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.__depth = 0
+
+    def __enter__(self: OC) -> OC:
+        if self.__depth == 0:
+            self.open()
+        self.__depth += 1
+        return self
+
+    def __exit__(
+        self,
+        _exc_type: Optional[Type[BaseException]],
+        _exc_val: Optional[BaseException],
+        _exc_tb: Optional[TracebackType],
+    ) -> None:
+        self.__depth -= 1
+        if self.__depth == 0:
+            self.close()
+
+    def open(self) -> None:
+        ...
+
+    def close(self) -> None:
+        ...

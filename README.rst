@@ -72,11 +72,13 @@ Examples
 API
 ===
 
-All of the context managers in ``morecontext`` are defined with
+Functions
+---------
+
+All of the following context manager functions are defined with
 ``contextlib.contextmanager``, so they can be used as function decorators as
-well.  All context managers return ``None`` on entry, so there's no point in
-writing "``with dirchanged(path) as foo:``"; just do "``with
-dirchanged(path):``".
+well.  They also all return ``None`` on entry, so there's no point in writing
+"``with dirchanged(path) as foo:``"; just do "``with dirchanged(path):``".
 
 These functions are not thread-safe.
 
@@ -233,3 +235,25 @@ equals ``value`` on exit.
 
 If ``prepend`` is true, ``value`` is instead prepended to ``lst`` on entry, and
 the first item in ``lst`` that equals ``value`` is removed on exit.
+
+
+Classes
+-------
+
+.. code:: python
+
+    class OpenClosable
+
+A base class for creating simple reentrant_ context managers.  ``OpenClosable``
+defines ``__enter__`` and ``__exit__`` methods that keep track of the number of
+nested ``with`` statements in effect and call the instance's ``open()`` and
+``close()`` methods when entering & exiting the outermost ``with``.
+
+Subclasses should override ``open()`` and/or ``close()`` with the desired
+code to run on entering & exiting the outermost ``with``; the default
+``open()`` and ``close()`` methods defined by ``OpenClosable`` do nothing.
+
+**Note:** Subclasses' ``__init__()`` methods must call ``super().__init__()``
+in order to properly initialize ``OpenClosable``!
+
+.. _reentrant: https://docs.python.org/3/library/contextlib.html#reentrant-cms
