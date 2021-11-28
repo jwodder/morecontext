@@ -1,5 +1,5 @@
-v0.5.0 (in development)
------------------------
+v0.5.0 (2021-11-27)
+-------------------
 - Support Python 3.10
 - Added `OpenClosable` base class for simple reentrant context managers
 
