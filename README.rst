@@ -242,7 +242,12 @@ Classes
 
 .. code:: python
 
-    class OpenClosable
+    class OpenClosable:
+        def open(self) -> None:
+            ...
+
+        def close(self) -> None:
+            ...
 
 A base class for creating simple reentrant_ context managers.  ``OpenClosable``
 defines ``__enter__`` and ``__exit__`` methods that keep track of the number of
