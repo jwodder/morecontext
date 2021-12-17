@@ -12,7 +12,7 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
-__version__ = "0.5.0"
+__version__ = "0.6.0.dev1"
 __author__ = "John Thorvald Wodder II"
 __author_email__ = "morecontext@varonathe.org"
 __license__ = "MIT"
@@ -345,23 +345,19 @@ class OpenClosable:
     code to run on entering & exiting the outermost ``with``; the default
     ``open()`` and ``close()`` methods defined by `OpenClosable` do nothing.
 
-    .. note::
-
-        Subclasses' ``__init__()`` methods must call ``super().__init__()`` in
-        order to properly initialize `OpenClosable`!
-
     .. _reentrant: https://docs.python.org/3/library/contextlib.html
                    #reentrant-cms
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.__depth = 0
+    __depth: int
 
     def __enter__(self: OC) -> OC:
-        if self.__depth == 0:
+        try:
+            self.__depth += 1
+        except AttributeError:
+            self.__depth = 1
+        if self.__depth == 1:
             self.open()
-        self.__depth += 1
         return self
 
     def __exit__(

@@ -4,7 +4,6 @@ from morecontext import OpenClosable
 
 class OpenCloser(OpenClosable):
     def __init__(self) -> None:
-        super().__init__()
         self.calls: List[str] = []
 
     def open(self) -> None:

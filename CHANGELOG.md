@@ -1,3 +1,8 @@
+v0.6.0 (in development)
+-----------------------
+- `__init__` methods of `OpenClosable` subclasses no longer need to call
+  `super().__init__()`
+
 v0.5.0 (2021-11-27)
 -------------------
 - Support Python 3.10

@@ -258,7 +258,4 @@ Subclasses should override ``open()`` and/or ``close()`` with the desired
 code to run on entering & exiting the outermost ``with``; the default
 ``open()`` and ``close()`` methods defined by ``OpenClosable`` do nothing.
 
-**Note:** Subclasses' ``__init__()`` methods must call ``super().__init__()``
-in order to properly initialize ``OpenClosable``!
-
 .. _reentrant: https://docs.python.org/3/library/contextlib.html#reentrant-cms
