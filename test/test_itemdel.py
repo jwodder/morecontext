@@ -1,4 +1,5 @@
-from typing import Any, Dict
+from __future__ import annotations
+from typing import Any
 import pytest
 from morecontext import itemdel
 
@@ -20,7 +21,7 @@ def test_itemdel_error() -> None:
 
 
 def test_itemdel_modified() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with itemdel(d, "foo"):
         assert "foo" not in d
         d["foo"] = [3.14]
@@ -28,7 +29,7 @@ def test_itemdel_modified() -> None:
 
 
 def test_itemdel_modified_error() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with pytest.raises(RuntimeError, match="Catch this!"):
         with itemdel(d, "foo"):
             assert "foo" not in d
@@ -54,7 +55,7 @@ def test_itemdel_unset_error() -> None:
 
 
 def test_itemdel_unset_modified() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with itemdel(d, "bar"):
         assert "bar" not in d
         d["bar"] = [3.14]
@@ -62,7 +63,7 @@ def test_itemdel_unset_modified() -> None:
 
 
 def test_itemdel_unset_modified_error() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with pytest.raises(RuntimeError, match="Catch this!"):
         with itemdel(d, "bar"):
             assert "bar" not in d

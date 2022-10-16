@@ -1,4 +1,5 @@
-from typing import Any, Dict, List
+from __future__ import annotations
+from typing import Any
 import pytest
 from morecontext import itemrollback
 
@@ -20,7 +21,7 @@ def test_itemrollback_nop_error() -> None:
 
 
 def test_itemrollback_modify() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with itemrollback(d, "foo"):
         assert d["foo"] == 42
         d["foo"] = [3.14]
@@ -28,7 +29,7 @@ def test_itemrollback_modify() -> None:
 
 
 def test_itemrollback_modify_error() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with pytest.raises(RuntimeError, match="Catch this!"):
         with itemrollback(d, "foo"):
             assert d["foo"] == 42
@@ -72,7 +73,7 @@ def test_itemrollback_unset_error() -> None:
 
 
 def test_itemrollback_unset_modify() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with itemrollback(d, "bar"):
         assert "bar" not in d
         d["bar"] = [3.14]
@@ -80,7 +81,7 @@ def test_itemrollback_unset_modify() -> None:
 
 
 def test_itemrollback_unset_modify_error() -> None:
-    d: Dict[str, Any] = {"foo": 42}
+    d: dict[str, Any] = {"foo": 42}
     with pytest.raises(RuntimeError, match="Catch this!"):
         with itemrollback(d, "bar"):
             assert "bar" not in d
@@ -90,7 +91,7 @@ def test_itemrollback_unset_modify_error() -> None:
 
 
 def test_itemrollback_no_copy() -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with itemrollback(d, "foo"):
@@ -100,7 +101,7 @@ def test_itemrollback_no_copy() -> None:
 
 
 def test_itemrollback_no_copy_error() -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with pytest.raises(RuntimeError, match="Catch this!"):
@@ -112,7 +113,7 @@ def test_itemrollback_no_copy_error() -> None:
 
 
 def test_itemrollback_copy() -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with itemrollback(d, "foo", copy=True):
@@ -122,7 +123,7 @@ def test_itemrollback_copy() -> None:
 
 
 def test_itemrollback_copy_error() -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with pytest.raises(RuntimeError, match="Catch this!"):
@@ -135,7 +136,7 @@ def test_itemrollback_copy_error() -> None:
 
 @pytest.mark.parametrize("copy", [False, True])
 def test_itemrollback_deepcopy(copy: bool) -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with itemrollback(d, "foo", copy=copy, deepcopy=True):
@@ -146,7 +147,7 @@ def test_itemrollback_deepcopy(copy: bool) -> None:
 
 @pytest.mark.parametrize("copy", [False, True])
 def test_itemrollback_deepcopy_error(copy: bool) -> None:
-    d: Dict[str, Dict[str, List[Any]]] = {
+    d: dict[str, dict[str, list[Any]]] = {
         "foo": {"bar": [1, 2, 3], "quux": ["a", "b", "c"]}
     }
     with pytest.raises(RuntimeError, match="Catch this!"):

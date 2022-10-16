@@ -1,10 +1,10 @@
-from typing import List
+from __future__ import annotations
 from morecontext import OpenClosable
 
 
 class OpenCloser(OpenClosable):
     def __init__(self) -> None:
-        self.calls: List[str] = []
+        self.calls: list[str] = []
 
     def open(self) -> None:
         self.calls.append("open")

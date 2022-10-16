@@ -12,23 +12,19 @@ Type annotated!  Fully tested!
 Visit <https://github.com/jwodder/morecontext> for more information.
 """
 
+from __future__ import annotations
+from collections.abc import Iterator, MutableMapping, MutableSequence
+from contextlib import contextmanager, suppress
+import copy as copymod
+import os
+from types import TracebackType
+from typing import Any, Optional, TypeVar
+
 __version__ = "0.7.0.dev1"
 __author__ = "John Thorvald Wodder II"
 __author_email__ = "morecontext@varonathe.org"
 __license__ = "MIT"
 __url__ = "https://github.com/jwodder/morecontext"
-
-from contextlib import contextmanager, suppress
-import copy as copymod
-import os
-import sys
-from types import TracebackType
-from typing import Any, Optional, Type, TypeVar, Union
-
-if sys.version_info < (3, 9):
-    from typing import Iterator, MutableMapping, MutableSequence
-else:
-    from collections.abc import Iterator, MutableMapping, MutableSequence
 
 __all__ = [
     "OpenClosable",
@@ -52,7 +48,7 @@ OC = TypeVar("OC", bound="OpenClosable")
 
 @contextmanager
 def dirchanged(
-    dirpath: Union[str, bytes, "os.PathLike[str]", "os.PathLike[bytes]"]
+    dirpath: str | bytes | os.PathLike[str] | os.PathLike[bytes],
 ) -> Iterator[None]:
     """
     Temporarily change the current working directory.
@@ -362,7 +358,7 @@ class OpenClosable:
 
     def __exit__(
         self,
-        _exc_type: Optional[Type[BaseException]],
+        _exc_type: Optional[type[BaseException]],
         _exc_val: Optional[BaseException],
         _exc_tb: Optional[TracebackType],
     ) -> None:
