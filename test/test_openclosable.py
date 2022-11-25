@@ -6,7 +6,7 @@ class OpenCloser(OpenClosable):
     def __init__(self) -> None:
         self.calls: list[str] = []
 
-    def open(self) -> None:
+    def open(self) -> None:  # noqa: A003
         self.calls.append("open")
 
     def close(self) -> None:

@@ -366,7 +366,7 @@ class OpenClosable:
         if self.__depth == 0:
             self.close()
 
-    def open(self) -> None:
+    def open(self) -> None:  # noqa: A003
         ...
 
     def close(self) -> None:
