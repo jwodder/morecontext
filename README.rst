@@ -35,7 +35,7 @@ Type annotated!  Fully tested!
 
 Installation
 ============
-``morecontext`` requires Python 3.7 or higher.  Just use `pip
+``morecontext`` requires Python 3.8 or higher.  Just use `pip
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``morecontext``::
 
