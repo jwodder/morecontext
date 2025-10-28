@@ -86,7 +86,7 @@ These functions are not thread-safe.
 
 .. code:: python
 
-    dirchanged(dirpath: Union[str, bytes, os.PathLike]) -> ContextManager[None]
+    dirchanged(dirpath: str | bytes | os.PathLike) -> ContextManager[None]
 
 Temporarily change the current working directory.
 
