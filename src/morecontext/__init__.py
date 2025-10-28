@@ -18,9 +18,9 @@ from contextlib import contextmanager, suppress
 import copy as copymod
 import os
 from types import TracebackType
-from typing import Any, Optional, TypeVar
+from typing import Any, TypeVar
 
-__version__ = "0.6.1"
+__version__ = "0.7.0.dev1"
 __author__ = "John Thorvald Wodder II"
 __author_email__ = "morecontext@varonathe.org"
 __license__ = "MIT"
@@ -358,9 +358,9 @@ class OpenClosable:
 
     def __exit__(
         self,
-        _exc_type: Optional[type[BaseException]],
-        _exc_val: Optional[BaseException],
-        _exc_tb: Optional[TracebackType],
+        _exc_type: type[BaseException] | None,
+        _exc_val: BaseException | None,
+        _exc_tb: TracebackType | None,
     ) -> None:
         self.__depth -= 1
         if self.__depth == 0:

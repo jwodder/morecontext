@@ -35,7 +35,7 @@ Type annotated!  Fully tested!
 
 Installation
 ============
-``morecontext`` requires Python 3.8 or higher.  Just use `pip
+``morecontext`` requires Python 3.10 or higher.  Just use `pip
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``morecontext``::
 
@@ -86,7 +86,7 @@ These functions are not thread-safe.
 
 .. code:: python
 
-    dirchanged(dirpath: Union[str, bytes, os.PathLike]) -> ContextManager[None]
+    dirchanged(dirpath: str | bytes | os.PathLike) -> ContextManager[None]
 
 Temporarily change the current working directory.
 
